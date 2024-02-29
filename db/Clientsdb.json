@@ -1,0 +1,44 @@
+[
+    {
+      "email": "tameraforbes@autograte.com",
+      "name": "Rasmussen Steele",
+      "numberOfLoans": 9,
+      "amountOwed": "$0.0"
+    },
+    {
+      "email": "leahartman@tetratrex.com",
+      "name": "Debra Gibson",
+      "numberOfLoans": 1,
+      "amountOwed": "$880.04"
+    },
+    {
+      "email": "summermaddox@zboo.com",
+      "name": "Terra Beck",
+      "numberOfLoans": 28,
+      "amountOwed": "$507.42"
+    },
+    {
+      "email": "braydotson@lumbrex.com",
+      "name": "Marci Horne",
+      "numberOfLoans": 16,
+      "amountOwed": "$990.37"
+    },
+    {
+      "email": "deckersweeney@incubus.com",
+      "name": "Wall Ruiz",
+      "numberOfLoans": 7,
+      "amountOwed": "$754.37"
+    },
+    {
+      "email": "adamsnorman@volax.com",
+      "name": "Vanessa Logan",
+      "numberOfLoans": 22,
+      "amountOwed": "$51.96"
+    },
+    {
+      "email": "janellwall@sensate.com",
+      "name": "Valeria Oneal",
+      "numberOfLoans": 0,
+      "amountOwed": "$208.80"
+    }
+]
