@@ -10,5 +10,9 @@
   "user3@test.com": {
     "debt": 0,
     "loanId": 1
+  },
+  "user4@test.com": {
+    "debt": 0,
+    "loanId": 1
   }
 }
