@@ -1,0 +1,14 @@
+{
+  "user@test.com": {
+    "debt": 0,
+    "loanId": 13
+  },
+  "user2@test.com": {
+    "debt": 150,
+    "loanId": 2
+  },
+  "user3@test.com": {
+    "debt": 0,
+    "loanId": 1
+  }
+}
