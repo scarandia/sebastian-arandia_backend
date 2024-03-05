@@ -18,6 +18,7 @@ function writeDatabase(users) {
   }
 }
 
+/*
 function createUserIfNotExists(email, amount) {
   const users = readDatabase();
   if (users[email]) {
@@ -30,8 +31,9 @@ function createUserIfNotExists(email, amount) {
 
   return null;
 }
+*/
 
-
+/*
 const STATUS_OK = 'ok'
 const STATUS_LOAN_EXCEEDED = 'loan_exceeded'
 
@@ -51,6 +53,38 @@ function createNewLoan(user, amount) {
   }
 
   return { user, status };
+}
+*/
+
+function processLoan(req, res) {
+  console.log('process loan', req)
+  const { email, amount } = req.body;
+  const users = readDatabase();
+
+  if (!users[email] && amount > 50) {
+    // New user, create a record
+    return res.status(400).json({ errorCode: '101', message: 'First loan exceeded' });
+  }
+  if (!users[email] && amount > 0) {
+    users[email] = { debt: 0, loanId: 0 };
+  }
+  if (!users[email] && amount < 0) {
+    return res.status(400).json({ errorCode: '103', message: 'Loan amount invalid' });
+  }
+
+  const user = users[email];
+
+  if (amount > 1000 || user.debt + amount > 1000) {
+    return res.status(400).json({ errorCode: '100', message: 'Loan Amount exceeded' });
+  }
+
+  // Accept the loan
+  user.debt += amount;
+  user.loanId += 1;
+
+  writeDatabase(users);
+
+  res.status(201).json({ message: 'Loan accepted', loanId: user.loanId });
 }
 
 function processPayment(req, res) {
@@ -83,63 +117,7 @@ function processPayment(req, res) {
 }
 
 
-function processLoan(req, res) {
-  const { email, amount } = req.body;
-  const users = readDatabase();
 
-  if (!users[email] && amount > 50) {
-    // New user, create a record
-    return res.status(400).json({ errorCode: '101', message: 'First loan exceeded' });
-  }
-  if (!users[email] && amount > 0) {
-    users[email] = { debt: 0, loanId: 0 };
-  }
-  if (!users[email] && amount < 0) {
-    return res.status(400).json({ errorCode: '103', message: 'Loan amount invalid' });
-  }
-
-
-  const user = users[email];
-
-  if (amount > 1000 || user.debt + amount > 1000) {
-    return res.status(400).json({ errorCode: '100', message: 'Loan Amount exceeded' });
-  }
-
-  // Accept the loan
-  user.debt += amount;
-  user.loanId += 1;
-
-  writeDatabase(users);
-
-  res.status(201).json({ message: 'Loan accepted', loanId: user.loanId });
-}
 
 module.exports = { processLoan, processPayment };
-
-
-
-
-/*
-function processPayment(req, res) {
-  const { email, amount } = req.body;
-  const users = readDatabase();
-
-  if (!users[email]) {
-    return res.status(400).json({ errorCode: '101', message: 'No Debt' });
-  }
-
-  const user = users[email];
-
-  if (amount > user.debt) {
-    return res.status(400).json({ errorCode: '100', message: 'Amount exceeds debt' });
-  }
-
-  // Accept the payment
-  user.debt -= amount;
-
-  writeDatabase(users); // Update the database file
-
-  res.status(201).json({ message: 'Payment accepted' });
-}
-*/
 

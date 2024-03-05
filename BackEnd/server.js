@@ -1,62 +1,41 @@
 const express = require("express");
 const bodyParser = require('body-parser');
-const { processLoan, processPayment } = require('./models/processPay.js');
+const { processLoan, processPayment } = require('./controllers/processPay.js');
 const clientsRouter = require('./routes/clients');
 //const loansRouter = require('./routes/loans');
 //const paymentsRouter = require('./routes/payments');
-//const { validatePayment, LoanValidator } = require("./middleware/validateRequest");
-const expressValidator = require("express-validator");
 const Joi = require("joi");
+const validateRequest = require("./middleware/validateRequest.js");
 
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 8080;
 
-//Validator Schemas
+/* routes and importing functions */
 
-const loanSchema = Joi.object({
-    email: Joi.string().email().required(),
-    amount: Joi.number().min(0).max(1000).required(),
-})
-
-const paymentSchema = Joi.object({
-    email: Joi.string().email().required(),
-    amount: Joi.number().min(0).max(1000).required(),
-})
-
-/* If cases for schema validators */
-
-app.post('/loans', processLoan, (req, res) => {
-    const { error, value } = paymentSchema.validate(req.body)
+app.post('/loans', validateRequest.validateLoan, (req, res) => {
+    const { error, value } = processLoan(req, res);
 
     if (error) {
         console.log(error);
-        return res.send("Invalid Request");
+        return res.status(400).send('ERROR');
     }
 
     res.status(200).json({ message: 'Loan created' });
 });
 
-app.post('/payments', processPayment, (req, res) => {
-    const { error, value } = paymentSchema.validate(req.body)
+app.post('/payments', validateRequest.validatePayment, (req, res) => {
+    const { error, value } = processPayment(req, res);
 
     if (error) {
         console.log(error);
-        return res.send("Invalid Request");
+        return res.status(400).send('ERROR');
     }
 
-    res.status(200).json({ message: 'Payment received' });
+    res.status(200).json({ message: 'Payment processed' });
 });
 
 app.use('/clients', clientsRouter);
 
 app.use(bodyParser.json());
-
-app.listen(PORT, () => console.log("Server Started on port " + PORT));
-
-/*
-app.post('/loans', LoanValidator, (req, res) => {
-    res.status(200).json({ message: 'Loan processed' });
-});
-*/
-//app.post('/payments', processPayment);
+app.listen(PORT, () => console.log("Server Started on port " + PORT)); 

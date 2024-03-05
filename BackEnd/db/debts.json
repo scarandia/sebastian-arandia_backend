@@ -1,7 +1,7 @@
 {
   "user@test.com": {
-    "debt": 0,
-    "loanId": 13
+    "debt": 50,
+    "loanId": 15
   },
   "user2@test.com": {
     "debt": 150,
@@ -12,7 +12,11 @@
     "loanId": 1
   },
   "user4@test.com": {
-    "debt": 0,
+    "debt": 100,
+    "loanId": 7
+  },
+  "user5@test.com": {
+    "debt": 10,
     "loanId": 1
   }
 }
