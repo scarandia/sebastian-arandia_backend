@@ -1,12 +1,12 @@
 const express = require("express");
 const bodyParser = require('body-parser');
-const { processLoan, processPayment } = require('./models/processPay.js');
-const clientsRouter = require('./routes/clients');
 const expressValidator = require("express-validator");
 const Joi = require("joi");
+const { processLoan, processPayment } = require('./controllers/processPay.js');
+const clientsRouter = require('./routes/clients');
 
 const app = express();
-app.use(express.json());
+app.use(bodyParser.json());
 const PORT = process.env.PORT || 8080;
 
 //Validator Schemas

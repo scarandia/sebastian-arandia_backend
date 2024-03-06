@@ -1,44 +1,32 @@
-/*
-const { Validator } = require('express-validator');
-const { validate } = new Validator({ allErrors: true });
-*/
-/* JSON schema for payment. */
-const paymentSchema = {
-  type: 'object',
-  properties: {
-    email: {
-      type: 'string',
-      minLength: 1,
-    },
-    amount: {
-      type: 'integer',
-      minimum: 1,
-      maximum: 1000,
-    },
-  },
-  required: ['email', 'amount'],
-  additionalProperties: false,
+const Joi = require("joi");
+
+const emailConstraints = {
+  minDomainSegments: 2,
+  tlds: { allow: ['com', 'net'] }
 };
 
-/* JSON schema for loan. */
-const loanSchema = {
-  type: 'object',
-  properties: {
-    email: {
-      type: 'string',
-      minLength: 1,
-    },
-    amount: {
-      type: 'integer',
-      minimum: 1,
-      maximum: 1000,
-    },
-  },
-  required: ['email', 'amount'],
-  additionalProperties: false,
-};
+const loanSchema = Joi.object({
+  email: Joi.string().email(emailConstraints).required().messages({
+    'string.email': 'Invalid email format. Must have valid domain.',
+    'any.required': 'Email is required.'
+  }),
+  amount: Joi.number().min(0).max(1000).required().messages({
+    'number.min': 'Amount must be greater than or equal to 0.',
+    'number.max': 'Amount must be less than or equal to 1000.',
+    'any.required': 'Amount is required.'
+  }),
+}).options({ abortEarly: false }); // Allow all validation errors to be returned
 
-const validatePayment = validate({ body: paymentSchema });
-const LoanValidator = validate({ body: loanSchema });
+const paymentSchema = Joi.object({
+  email: Joi.string().email(emailConstraints).required().messages({
+    'string.email': 'Invalid email format. Must have valid domain.',
+    'any.required': 'Email is required.'
+  }),
+  amount: Joi.number().min(0).max(1000).required().messages({
+    'number.min': 'Amount must be greater than or equal to 0.',
+    'number.max': 'Amount must be less than or equal to 1000.',
+    'any.required': 'Amount is required.'
+  }),
+}).options({ abortEarly: false }); // Allow all validation errors to be returned
 
-module.exports = { validatePayment, LoanValidator };
+module.exports = { loanSchema, paymentSchema };
