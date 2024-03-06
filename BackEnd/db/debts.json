@@ -18,5 +18,9 @@
   "user5@test.com": {
     "debt": 60,
     "loanId": 6
+  },
+  "user5test.com": {
+    "debt": 10,
+    "loanId": 1
   }
 }
