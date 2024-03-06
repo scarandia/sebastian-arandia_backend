@@ -1,57 +1,32 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
-const commonMessages = {
-  email: {
-    base: 'Invalid email format. Please provide a valid email address.',
-    empty: 'Email is required.',
-    required: 'Email is required.',
-  },
-  amount: {
-    min: 'Amount must be at least 0.',
-    max: 'Amount must not exceed 1000.',
-    empty: 'Amount is required.',
-    required: 'Amount is required.',
-  },
-};
-
-const validator = (schema) => (req, res, next) => {
-  const payload = req.body;
-  const result = schema.validate(payload, { abortEarly: false });
-
-  if (result.error) {
-    const errorDetails = result.error.details.map(detail => ({
-      message: detail.message,
-      path: detail.path,
-      type: detail.type,
-    }));
-    return res.status(400).json({ errors: errorDetails });
-  }
-  next();
-};
-
-const emailSchema = Joi.string().email({
+const emailConstraints = {
   minDomainSegments: 2,
-  tlds: { allow: ['com', 'net', 'unosquare'] }  // Add the top-level domains you want to allow
-}).required().messages(commonMessages.email);
-
-const amountSchema = Joi.number().min(0).max(1000).required().messages(commonMessages.amount);
+  tlds: { allow: ['com', 'net'] }
+};
 
 const loanSchema = Joi.object({
-  email: emailSchema.custom((value, helpers) => {
-    if (typeof value !== 'string') {
-      return helpers.message('Email must be a string.');
-    }
-    return value;
+  email: Joi.string().email(emailConstraints).required().messages({
+    'string.email': 'Invalid email format. Must have valid domain.',
+    'any.required': 'Email is required.'
   }),
-  amount: amountSchema,
-});
+  amount: Joi.number().min(0).max(1000).required().messages({
+    'number.min': 'Amount must be greater than or equal to 0.',
+    'number.max': 'Amount must be less than or equal to 1000.',
+    'any.required': 'Amount is required.'
+  }),
+}).options({ abortEarly: false }); // Allow all validation errors to be returned
 
 const paymentSchema = Joi.object({
-  email: emailSchema,
-  amount: amountSchema,
-});
+  email: Joi.string().email(emailConstraints).required().messages({
+    'string.email': 'Invalid email format. Must have valid domain.',
+    'any.required': 'Email is required.'
+  }),
+  amount: Joi.number().min(0).max(1000).required().messages({
+    'number.min': 'Amount must be greater than or equal to 0.',
+    'number.max': 'Amount must be less than or equal to 1000.',
+    'any.required': 'Amount is required.'
+  }),
+}).options({ abortEarly: false }); // Allow all validation errors to be returned
 
-module.exports = {
-  validateLoan: validator(loanSchema),
-  validatePayment: validator(paymentSchema),
-};
+module.exports = { loanSchema, paymentSchema };
