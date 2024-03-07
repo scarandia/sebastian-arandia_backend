@@ -2,25 +2,16 @@ const express = require('express')
 const router = express.Router()
 const fs = require('fs');
 const db = require('../BackEnd/db/Clientsdb.json');
+const controller = require('../BackEnd/controllers/processPay.js')
 
 /* Clients root routes all start with /client */
 /*Show clients JSON FORMAT*/
 router
     .get('/', (req, res) => {
         console.log("Showing clients")
-        fs.readFile('../BackEnd/db/Clientsdb.json', 'utf8', (err, data) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).send('Internal Server Error');
-            }
-
-            // Parse the JSON data and send it as the response
-            const jsonData = JSON.parse(data);
-            res.json(jsonData);
-        });
+        // Parse the JSON data and send it as the response
+        res.json(controller.readNewClients());
     });
-
-
 
 
 router.get('/id', (req, res) => {
@@ -30,17 +21,15 @@ router.get('/id', (req, res) => {
         if (err) {
             return res.status(500).send('Internal Server Error');
         }
-
         res.json(result);
     });
 });
 
 
-   
 module.exports = { clientsRouter: router }
 
 /*Clients dynamic id routes and methods */
-/* MUST SHOW ONLY USERS PREVIOUSLY CREATED 
+/* MUST SHOW ONLY USERS PREVIOUSLY CREATED
 router
     .route("/:client_id")
     .get((req, res) => {
@@ -52,7 +41,7 @@ router
     .delete((req, res) => {
         res.send(`DELETE client With ID ${req.params.client_id}`)
     })
+
+module.exports = router
+
 */
-
-
-//module.exports = router

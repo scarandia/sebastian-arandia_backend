@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const Joi = require("joi");
-const { processLoan, processPayment } = require('./controllers/processPay');
+const { processLoan, processPayment, readNewClients } = require('./controllers/processPay');
 const { clientsRouter } = require('../routes/clients');
 const { homepageRouter } = require('../routes/homepage');
 
@@ -26,11 +26,13 @@ const paymentSchema = Joi.object({
 
 app.use('/', homepageRouter);
 
-app.use('/clients', clientsRouter);
+app.use('/clients', clientsRouter, readNewClients);
 
 app.post('/loans', processLoan);
 
 app.post('/payments', processPayment);
+
+//app.use('/newClients', readNewClients);
 
 app.use(bodyParser.json());
 
