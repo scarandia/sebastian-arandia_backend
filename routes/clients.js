@@ -1,14 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const fs = require('fs');
-const db = require('../db/Clientsdb.json');
+const db = require('../BackEnd/db/Clientsdb.json');
 
 /* Clients root routes all start with /client */
 /*Show clients JSON FORMAT*/
-router.route("/")
-    .get((req, res) => {
+router
+    .get('/', (req, res) => {
         console.log("Showing clients")
-        fs.readFile('db/Clientsdb.json', 'utf8', (err, data) => {
+        fs.readFile('../BackEnd/db/Clientsdb.json', 'utf8', (err, data) => {
             if (err) {
                 console.error(err);
                 return res.status(500).send('Internal Server Error');
@@ -19,7 +19,7 @@ router.route("/")
             res.json(jsonData);
         });
     });
-module.exports = router
+
 
 
 
@@ -35,6 +35,9 @@ router.get('/id', (req, res) => {
     });
 });
 
+
+   
+module.exports = { clientsRouter: router }
 
 /*Clients dynamic id routes and methods */
 /* MUST SHOW ONLY USERS PREVIOUSLY CREATED 
@@ -52,4 +55,4 @@ router
 */
 
 
-module.exports = router
+//module.exports = router

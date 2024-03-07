@@ -1,9 +1,9 @@
 const express = require("express");
 const bodyParser = require('body-parser');
-const expressValidator = require("express-validator");
 const Joi = require("joi");
-const { processLoan, processPayment } = require('./controllers/processPay.js');
-const clientsRouter = require('./routes/clients');
+const { processLoan, processPayment } = require('./controllers/processPay');
+const { clientsRouter } = require('../routes/clients');
+const { homepageRouter } = require('../routes/homepage');
 
 const app = express();
 app.use(bodyParser.json());
@@ -23,29 +23,14 @@ const paymentSchema = Joi.object({
 
 /* If cases for schema validators */
 
-app.post('/loans', processLoan, (req, res) => {
-    const { error, value } = loanSchema.validate(req.body)
 
-    if (error) {
-        console.log(error);
-        return res.send("Invalid Request");
-    }
-
-    res.status(200).json({ message: 'Loan created' });
-});
-
-app.post('/payments', processPayment, (req, res) => {
-    const { error, value } = paymentSchema.validate(req.body)
-
-    if (error) {
-        console.log(error);
-        return res.send("Invalid Request");
-    }
-
-    res.status(200).json({ message: 'Payment received' });
-});
+app.use('/', homepageRouter);
 
 app.use('/clients', clientsRouter);
+
+app.post('/loans', processLoan);
+
+app.post('/payments', processPayment);
 
 app.use(bodyParser.json());
 

@@ -8,7 +8,7 @@
     "loanId": 2
   },
   "user6@test.com": {
-    "debt": 120,
-    "loanId": 3
+    "debt": 60,
+    "loanId": 9
   }
 }
