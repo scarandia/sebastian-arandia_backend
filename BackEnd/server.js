@@ -21,8 +21,7 @@ const paymentSchema = Joi.object({
     amount: Joi.number().min(0).max(1000).required(),
 })
 
-/* If cases for schema validators */
-
+/* Available Routs */
 
 app.use('/', homepageRouter);
 
