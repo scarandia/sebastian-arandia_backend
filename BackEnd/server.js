@@ -1,9 +1,10 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const Joi = require("joi");
-const { processLoan, processPayment, readNewClients } = require('./controllers/processPay');
-const { clientsRouter } = require('../routes/clients');
-const { homepageRouter } = require('../routes/homepage');
+const { processLoan, processPayment } = require('./controllers/processPay');
+const transactionsRouter = require('../routes/transactions');
+const clientsRouter = require('../routes/clients');
+const  homepageRouter = require('../routes/homepage');
 
 const app = express();
 app.use(bodyParser.json());
@@ -25,14 +26,15 @@ const paymentSchema = Joi.object({
 
 app.use('/', homepageRouter);
 
-app.use('/clients', clientsRouter, readNewClients);
+app.use('/clients', clientsRouter);
 
 app.post('/loans', processLoan);
 
 app.post('/payments', processPayment);
 
-//app.use('/newClients', readNewClients);
-
 app.use(bodyParser.json());
 
+app.use('/transactions', transactionsRouter);
+
 app.listen(PORT, () => console.log("Server Started on port " + PORT));
+

@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router();
-// Necessary functions or middleware
-
 // Define the route
-router.get('/', (req, res) => {
-    console.log("Showing Webpage")
-   
-    res.send("Welcome to the Homepage")
-});
+router.route('/')
+    .get((req, res) => {
+        console.log("Showing Webpage")
 
-module.exports = { homepageRouter: router };
+        res.send("Welcome to the Homepage")
+    });
+
+module.exports = router;
+   

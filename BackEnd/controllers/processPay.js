@@ -11,17 +11,6 @@ function readDatabase() {
   }
 }
 
-function readNewClients() {
-  try {
-    const data = fs.readFileSync('./db/Clientsdb.json', 'utf8');
-    console.log(data);
-    return JSON.parse(data).clients["user1@test.com"]["transactions"].filter(x => x.type === 'loan').reduce((a, b) => a + b.amount, 0);
-  } catch (error) {
-    console.error('Error reading database:', error);
-    return {};
-  }
-}
-
 function writeDatabase(users) {
   try {
     fs.writeFileSync('db/debts.json', JSON.stringify(users, null, 2), 'utf8');
@@ -105,6 +94,5 @@ function processPayment(req, res) {
 
 module.exports = {
   processLoan,
-  processPayment,
-  readNewClients
+  processPayment
 };

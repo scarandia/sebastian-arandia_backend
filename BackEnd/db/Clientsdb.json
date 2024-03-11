@@ -1,36 +1,30 @@
 {
   "clients": {
       "user1@test.com": {
-          "debt": 0,
+          "debt": 250,
           "transactions": [
               {
-                  "amount": 50,
-                  "type": "loan"
+                  "amount": 50, "type": "loan"
               },
               {
-                  "amount": 500,
-                  "type": "loan"
+                  "amount": 50, "type": "payment"
               },
               {
-                  "amount": 250,
-                  "type": "payment"
+                  "amount": 250, "type": "loan"
               }
           ]
       },
       "user2@test.com": {
-          "debt": 300,
+          "debt": 100,
           "transactions": [
               {
-                  "amount": 50,
-                  "type": "loan"
+                  "amount": 50, "type": "loan"
               },
               {
-                  "amount": 150,
-                  "type": "payment"
+                  "amount": 50, "type": "payment"
               },
               {
-                  "amount": 100,
-                  "type": "payment"
+                  "amount": 100, "type": "loan"
               }
           ]
       }

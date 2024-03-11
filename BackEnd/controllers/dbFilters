@@ -1,0 +1,44 @@
+const fs = require('fs');
+
+
+function readClientsData() {
+    try {
+        const data = fs.readFileSync('./db/Clientsdb.json', 'utf8');
+        return JSON.parse(data).clients;
+    } catch (error) {
+        console.error('Error reading clients data:', error);
+        return {};
+    }
+}
+
+function filterTransactionsByEmailAndType(email, transactionType) {
+    const clientsData = readClientsData();
+
+    if (!clientsData || !clientsData[email]) {
+        console.error('Client not found or data is invalid.');
+        return null; 
+    }
+
+    const client = clientsData[email];
+    const transactions = client.transactions.filter(transaction => transaction.type === transactionType);
+    const totalAmount = transactions.reduce((total, transaction) => total + transaction.amount, 0)
+
+    return {
+        transactions, 
+        totalAmount
+    };
+}
+
+// Using:
+/*
+const userEmail = 'user2@test.com';
+const loanTransactions = filterTransactionsByEmailAndType(userEmail, 'loan');
+const paymentTransactions = filterTransactionsByEmailAndType(userEmail, 'payment');
+
+console.log('Loan Transactions:', loanTransactions);
+console.log('Payment Transactions:', paymentTransactions);
+*/
+module.exports = {
+    filterTransactionsByEmailAndType
+};
+
